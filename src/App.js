@@ -5,24 +5,12 @@ import Person from './Person/Person'
 class App extends Component {
   state = {
     persons: [
-      { name: 'JJ', age: 32 },
-      { name: 'Medzik', age: 31 },
-      { name: 'Lili', age: 2},
-      { name: 'Tytus', age: 2 }
+      { id: 1, name: 'JJ', age: 32 },
+      { id: 2, name: 'Medzik', age: 31 },
+      { id: 3, name: 'Lili', age: 2},
+      { id: 4, name: 'Tytus', age: 2 }
     ],
     showPersons: false
-  }
-
-  switchNameHandler = (newName) => {
-    // console.log('clicked');
-    this.setState({
-      persons: [
-        { name: newName, age: 32 },
-        { name: 'Medzik', age: 33 },
-        { name: 'Lili', age: 2 },
-        { name: 'Tytus', age: 2 }
-      ]
-    })
   }
 
   nameChangedHanlder = (event) => {
@@ -34,6 +22,12 @@ class App extends Component {
         { name: 'Tytus', age: 2 }
       ]
     })
+  }
+
+  deletePersonHandler = (personIndex) => {
+    const persons = [...this.state.persons];
+    persons.splice(personIndex, 1);
+    this.setState({persons: persons});
   }
 
   togglePersonsHandler = () => {
@@ -55,21 +49,13 @@ class App extends Component {
     if (this.state.showPersons) {
       persons = (
         <div>
-          {this.state.persons.map(person => {
+          {this.state.persons.map((person, index) => {
             return <Person
+              click={() => this.deletePersonHandler(index)}
               name={person.name}
-              age={person.age}/>
+              age={person.age}
+              key={person.id} />
           })}
-          <Person
-            name={this.state.persons[0].name}
-            age={this.state.persons[0].age}/>
-          <Person
-            name={this.state.persons[1].name}
-            age={this.state.persons[1].age}
-            click={this.switchNameHandler.bind(this, 'Jedras')}
-            changed={this.nameChangedHanlder} >Hobby: Racing</Person>
-          <Person name={this.state.persons[2].name} age={this.state.persons[2].age} />
-          <Person name={this.state.persons[3].name} age={this.state.persons[3].age} />
         </div>
       );
     }
